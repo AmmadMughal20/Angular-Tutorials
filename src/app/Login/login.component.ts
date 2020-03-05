@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators'; 
-import { AuthenticationService } from '../_services/Index';
+import { AuthenticationService } from '../_services';
 
 @Component({templateUrl:'login.component.html'})
 export class LoginComponent implements OnInit {
@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
     submitted= false;
     returnUrl: string;
     error: string;
+    success: string
 
     constructor(
         private formBuilder: FormBuilder,
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService
     ){
-        if (this.authenticationService.CurrentUserValue)
+        if (this.authenticationService.currentUserValue)
         {
             this.router.navigate(['/']);
         }
@@ -30,7 +31,14 @@ export class LoginComponent implements OnInit {
             username: ['', Validators.required],
             password: ['', Validators.required]
         });
+        
         this.returnUrl =  this.route.snapshot.queryParams['returnUrl'] || '/';
+
+
+        if(this.route.snapshot.queryParams['registered'])
+        {
+            this.success = 'Registration Successfull';
+        }
     }
 
 
@@ -41,6 +49,9 @@ export class LoginComponent implements OnInit {
         onSubmit()
         {
             this.submitted = true;
+
+            this.error = null;
+            this.success = null;
             
 
             if (this.loginForm.invalid)

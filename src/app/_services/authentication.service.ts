@@ -6,19 +6,19 @@ import {map} from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService{
-    private CurrentUserSubject: BehaviorSubject<any>;
-    public CurrentUser: Observable<any>;
+    private currentUserSubject: BehaviorSubject<any>;
+    public currentUser: Observable<any>;
 
 
     constructor (private http: HttpClient)
     {
-        this.CurrentUserSubject = new BehaviorSubject <any>(JSON.parse(localStorage.getItem('CurrentUser')));
-        this.CurrentUser = this.CurrentUserSubject.asObservable();
+        this.currentUserSubject = new BehaviorSubject <any>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUser = this.currentUserSubject.asObservable();
     }
 
-    public get CurrentUserValue()
+    public get currentUserValue()
     {
-        return this.CurrentUserSubject.value();
+        return this.currentUserSubject.value;
     }
 
 
@@ -26,15 +26,15 @@ export class AuthenticationService{
     {
         return this.http.post<any>(`${config.apiUrl}/users/authenticate`, {username,password})
         .pipe (map(user => {
-            localStorage.setItem('CurrentUser', JSON.stringify(user) );
-            this.CurrentUserSubject.next(user);
+            localStorage.setItem('currentUser', JSON.stringify(user) );
+            this.currentUserSubject.next(user);
             return user;
         }));
     }
 
     logout()
     {
-        localStorage.removeItem('CurrentUser');
-        this.CurrentUserSubject.next(null);
+        localStorage.removeItem('currentUser');
+        this.currentUserSubject.next(null);
     }
 }

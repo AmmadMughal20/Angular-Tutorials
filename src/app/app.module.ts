@@ -2,7 +2,8 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {appRoutingModule} from './app.routing';
 import {ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import {JWTInterceptor, ErrorInterceptor} from './_Helpers';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './Login';
 import {HomeComponent} from './Home';
@@ -28,6 +29,8 @@ import { FakeBackendProvider } from './_Helpers';
                 ],
     providers:
                 [
+                    {provide: HTTP_INTERCEPTORS, useClass:JWTInterceptor, multi:true},
+                    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
                         FakeBackendProvider
                 ],
     bootstrap: [AppComponent]
