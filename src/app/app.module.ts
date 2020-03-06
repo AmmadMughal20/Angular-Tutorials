@@ -10,6 +10,7 @@ import {HomeComponent} from './Home';
 import {RegisterComponent} from './Register';
 import {HelpComponent} from './Help';
 import { FakeBackendProvider } from './_Helpers';
+import { AlertComponent } from './_Components';
 
 @NgModule({
     imports: 
@@ -25,7 +26,8 @@ import { FakeBackendProvider } from './_Helpers';
                     HomeComponent,
                     RegisterComponent,
                     LoginComponent,
-                    HelpComponent
+                    HelpComponent,
+                    AlertComponent
                 ],
     providers:
                 [
